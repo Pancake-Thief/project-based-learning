@@ -4,14 +4,6 @@
 #include <unistd.h>
 #include <string.h>
 
-int main(int argc, char **argv){
-    //Load config files
-    //Run command loop
-    lsh_loop();
-
-
-    //Perform shutdown/clean up
-}
 
 /* Basic loop of a shell
 Read: Read the command from standard input
@@ -19,21 +11,7 @@ Parse: Separate the command string into a program and arguments
 Execute: Run the parsed command
 */
 
-void lsh_loop(){
-    char* line; //The address of a char or points to an array of characters makes a word
-    char** args; //points to an array of words 
-    int status; //Status of the terminal
 
-    do{
-        printf("> ");
-        line = lsh_read_line(); //Reads the user input
-        args = lsh_split_line(line); //Splits the line and parses it
-        status = lsh_execute(args); //Executes the arguments 
-
-        free(line);
-        free(args);
-    }while(status);
-}
 
 /*
 Reading a line
@@ -176,9 +154,7 @@ int lsh_cd(char** args){
 
 int lsh_help(char** args){
     int i;
-    printf("Samuel Briones-Plascencia's LSH\n
-            Type program names and arguments, and hit enter.\n
-            The following are built in:\n");
+    printf("Samuel Briones-Plascencia's LSH\nType program names and arguments, and hit enter.\nThe following are built in:\n");
 
     for(i = 0; i < lsh_num_builtins(); i++){
         printf("    %s\n", builtin_str[i]);
@@ -231,4 +207,29 @@ int lsh_execute(char ** args){
         }
     }
     return lsh_launch(args);
+}
+
+void lsh_loop(){
+    char* line; //The address of a char or points to an array of characters makes a word
+    char** args; //points to an array of words 
+    int status; //Status of the terminal
+
+    do{
+        printf("> ");
+        line = lsh_read_line(); //Reads the user input
+        args = lsh_split_line(line); //Splits the line and parses it
+        status = lsh_execute(args); //Executes the arguments 
+
+        free(line);
+        free(args);
+    }while(status);
+}
+
+int main(int argc, char **argv){
+    //Load config files
+    //Run command loop
+    lsh_loop();
+
+
+    //Perform shutdown/clean up
 }
